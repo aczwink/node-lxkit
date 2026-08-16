@@ -1,0 +1,31 @@
+{
+  "name": "@aczwink/node-lxkit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aczwink/node-lxkit.git"
+  },
+  "keywords": [],
+  "author": "Amir Czwink",
+  "license": "AGPL-3.0-only",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/aczwink/node-lxkit/issues"
+  },
+  "homepage": "https://github.com/aczwink/node-lxkit#readme",
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "@types/ssh2": "^1.15.5",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@aczwink/acts-util-node": "^1.0.0",
+    "ssh2": "^1.17.0"
+  }
+}
