@@ -26,6 +26,12 @@ export class SSHConnection implements MachineConnection
     {
     }
 
+    //Public methods
+    public Close(): void
+    {
+        this.conn.end();
+    }
+
     public async ExecuteCommand(command: string[], args: CommandExecutionArgs)
     {
         const cmdSvc = GlobalInjector.Resolve(CommandService);

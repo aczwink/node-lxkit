@@ -17,6 +17,8 @@
  * */
 import { Injectable } from "@aczwink/acts-util-node";
 import { CommandExecutionArgs, MachineConnection } from "../model/MachineConnection";
+import { CommandService } from "./CommandService";
+import { CommandTracingManager } from "./CommandTracingManager";
 
 export interface CommandExecutionResult
 {
@@ -28,6 +30,10 @@ export interface CommandExecutionResult
 @Injectable
 export class CommandExecutor
 {
+    constructor(private commandTracingManager: CommandTracingManager, private commandService: CommandService)
+    {
+    }
+
     public async ExecuteBufferedCommand(connection: MachineConnection, ...command: string[]): Promise<CommandExecutionResult>
     {
         let stdOut = "";
@@ -53,7 +59,24 @@ export class CommandExecutor
     //Private methods
     private async ExecuteCommandImpl(connection: MachineConnection, command: string[], args: CommandExecutionArgs & { expectedExitCode?: number })
     {
+        const tracer = this.commandTracingManager.activeHandler.CreateTracer(this.commandService.CommandToString(command).commandLine);
+        
+        const origStdErrHandler = args.onNewStdErrData;
+        args.onNewStdErrData = data => {
+            tracer.AddStdErr(data);
+            if(origStdErrHandler !== undefined)
+                origStdErrHandler(data);
+        };
+        
+        const origStdOutHandler = args.onNewStdOutData;
+        args.onNewStdOutData = data => {
+            tracer.AddStdOut(data);
+            if(origStdOutHandler !== undefined)
+                origStdOutHandler(data);
+        };
+        
         const exitCode = await connection.ExecuteCommand(command, args);
+        tracer.Finish(exitCode);
 
         if((args.expectedExitCode !== undefined) && (exitCode !== 0))
             throw new Error("Command '" + command.join(" ") + "' failed.");

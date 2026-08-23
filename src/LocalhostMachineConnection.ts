@@ -20,6 +20,11 @@ import { CommandExecutionArgs, MachineConnection } from "./model/MachineConnecti
 
 export class LocalhostMachineConnection implements MachineConnection
 {
+    //Public methods
+    public Close(): void
+    {
+    }
+    
     public async ExecuteCommand(command: string[], args: CommandExecutionArgs)
     {
         const childProcess = this.CreateChildProcess(command);

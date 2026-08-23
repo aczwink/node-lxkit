@@ -15,10 +15,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
+import { MachineContext } from "./model/MachineContext";
+import { MemoryCommandTracingHandler } from "./handlers/MemoryCommandTracingHandler";
 import { ConnectionsManager } from "./services/ConnectionsManager";
 import { PackageManager } from "./services/PackageManager";
+import { CommandTracingManager } from "./services/CommandTracingManager";
+import { StandardStreamsCommandTracingHandler } from "./handlers/StandardStreamsCommandTracingHandler";
+import { UsersManager } from "./services/UsersManager";
 
 export {
+    CommandTracingManager,
     ConnectionsManager,
-    PackageManager
+    MemoryCommandTracingHandler,
+    PackageManager,
+    StandardStreamsCommandTracingHandler,
+    UsersManager
+};
+
+export type {
+    MachineContext
 };

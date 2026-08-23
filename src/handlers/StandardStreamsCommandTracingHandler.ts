@@ -16,15 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
 
-export interface CommandExecutionArgs
-{
-    onNewStdErrData?: (data: string) => void;
-    onNewStdOutData?: (data: string) => void;
-    stdin?: string;
-}
+import { CommandTracer, CommandTracingHandler } from "../model/CommandTracingHandler";
 
-export interface MachineConnection
+export class StandardStreamsCommandTracingHandler implements CommandTracingHandler
 {
-    Close(): void;
-    ExecuteCommand(command: string[], args: CommandExecutionArgs): Promise<number>;
+    public CreateTracer(commandLine: string): CommandTracer
+    {
+        console.log(commandLine);
+        return {
+            AddStdErr: console.error,
+            AddStdOut: console.log,
+            Finish(exitCode) {
+                console.log("Exit code:", exitCode);
+            },
+        };
+    }
 }

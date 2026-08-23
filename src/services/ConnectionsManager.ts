@@ -57,7 +57,8 @@ export class ConnectionsManager
     {
         return {
             distribution: await this.FetchDistribution(connection),
-            ...connection
+            Close: connection.Close.bind(connection),
+            ExecuteCommand: connection.ExecuteCommand.bind(connection)
         };
     }
 

@@ -15,16 +15,37 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
+import { Injectable } from "@aczwink/acts-util-node";
+import { CommandTracingHandler } from "../model/CommandTracingHandler";
 
-export interface CommandExecutionArgs
+@Injectable
+export class CommandTracingManager
 {
-    onNewStdErrData?: (data: string) => void;
-    onNewStdOutData?: (data: string) => void;
-    stdin?: string;
-}
+    constructor()
+    {
+        this._activeHandler = {
+            CreateTracer: _ => {
+                return {
+                    AddStdErr: () => null,
+                    AddStdOut: () => null,
+                    Finish: () => null,
+                };
+            }
+        };
+    }
 
-export interface MachineConnection
-{
-    Close(): void;
-    ExecuteCommand(command: string[], args: CommandExecutionArgs): Promise<number>;
+    //Properties
+    public get activeHandler()
+    {
+        return this._activeHandler;
+    }
+
+    //Public methods
+    public EnableTracing(handler: CommandTracingHandler)
+    {
+        this._activeHandler = handler;
+    }
+
+    //State
+    private _activeHandler: CommandTracingHandler;
 }
