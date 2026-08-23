@@ -20,6 +20,7 @@ import { MachineContext } from "../model/MachineContext";
 import { Distribution } from "../model/Distribution";
 import { DebianPackageManager } from "../distros/debian/DebianPackageManager";
 import { DistroPackageManager } from "../distros/DistroPackageManager";
+import { PacmanPackageManager } from "../distros/arch/PacmanPackageManager";
 
 @Injectable
 export class PackageManager
@@ -48,7 +49,7 @@ export class PackageManager
         switch(connection.distribution)
         {
             case Distribution.Arch:
-                throw new Error("Method not implemented.");
+                return GlobalInjector.Resolve(PacmanPackageManager);
             case Distribution.Debian:
             case Distribution.Ubuntu:
                 return GlobalInjector.Resolve(DebianPackageManager);

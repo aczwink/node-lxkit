@@ -50,6 +50,16 @@ export class CommandExecutor
         await this.ExecuteCommandImpl(connection, command, { expectedExitCode: 0 });
     }
 
+    public async ExecuteCommand0Or1(connection: MachineConnection, ...command: string[])
+    {
+        const exitCode = await this.ExecuteCommandImpl(connection, command, {});
+        if(exitCode === 1)
+            return false;
+        if(exitCode === 0)
+            return true;
+        throw new Error("Unexpected exit code: " + exitCode);
+    }
+
     //Private methods
     private async ExecuteCommandImpl(connection: MachineConnection, command: string[], args: CommandExecutionArgs & { expectedExitCode?: number })
     {

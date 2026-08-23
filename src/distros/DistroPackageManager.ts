@@ -19,7 +19,8 @@ import { MachineContext } from "../model/MachineContext";
 
 export interface DistroPackageManager
 {
-    InstallPackages(connection: MachineContext, packageNames: string[]): Promise<void>;
-    IsPackageInstalled(connection: MachineContext, packageName: string): Promise<boolean>;
-    UninstallPackages(connection: MachineContext, packageNames: string[]): Promise<void>;
+    InstallPackages(ctx: MachineContext, packageNames: string[]): Promise<void>;
+    IsPackageInstalled(ctx: MachineContext, packageName: string): Promise<boolean>;
+    UninstallPackages(ctx: MachineContext, packageNames: string[]): Promise<void>;
+    UpgradeAllInstalledPackages(ctx: MachineContext): Promise<void>;
 }

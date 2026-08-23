@@ -31,9 +31,9 @@ export class ConnectionsManager
     {
     }
 
-    public CreateConnectionToLocalhost()
+    public async CreateConnectionToLocalhost()
     {
-        return this.BuildContext(new LocalhostMachineConnection);
+        return await this.BuildContext(new LocalhostMachineConnection);
     }
 
     public async CreateSSHConnection(config: { host: string; userName: string; password: string; })
@@ -57,7 +57,7 @@ export class ConnectionsManager
     {
         return {
             distribution: await this.FetchDistribution(connection),
-            ...connection
+            ExecuteCommand: connection.ExecuteCommand.bind(connection)
         };
     }
 
@@ -66,6 +66,8 @@ export class ConnectionsManager
         const id = await this.distroInfoService.FetchId(connection);
         switch(id)
         {
+            case "arch":
+                return Distribution.Arch;
             case "debian":
                 return Distribution.Debian;
             case "ubuntu":

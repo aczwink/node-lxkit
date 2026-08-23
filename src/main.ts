@@ -15,10 +15,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
+import { AURPackageManager } from "./distros/arch/AURPackageManager";
 import { ConnectionsManager } from "./services/ConnectionsManager";
 import { PackageManager } from "./services/PackageManager";
 
 export {
+    AURPackageManager,
     ConnectionsManager,
     PackageManager
 };

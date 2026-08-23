@@ -30,7 +30,6 @@ export class DebianPackageManager implements DistroPackageManager
     
     public async InstallPackages(ctx: MachineContext, packageNames: string[]): Promise<void>
     {
-        await this.commandExecutor.ExecuteCommand(ctx, "sudo", "apt-get", "update");
         await this.commandExecutor.ExecuteCommand(ctx, "sudo", "apt", "-y", "install", ...packageNames);
     }
 
@@ -44,7 +43,15 @@ export class DebianPackageManager implements DistroPackageManager
     public async UninstallPackages(ctx: MachineContext, packageNames: string[]): Promise<void>
     {
         await this.commandExecutor.ExecuteCommand(ctx, "sudo", "DEBIAN_FRONTEND=noninteractive", "apt", "-y", "purge", ...packageNames);
-        await this.commandExecutor.ExecuteCommand(ctx, "sudo", "apt", "-y", "autoremove");
+        await this.RemoveUnusedPackages(ctx);
+    }
+
+    public async UpgradeAllInstalledPackages(ctx: MachineContext): Promise<void>
+    {
+        await this.commandExecutor.ExecuteCommand(ctx, "sudo", "apt-get", "update");
+        await this.commandExecutor.ExecuteCommand(ctx, "sudo", "apt-get", "upgrade");
+
+        await this.RemoveUnusedPackages(ctx);
     }
 
     //Private methods
@@ -86,5 +93,10 @@ export class DebianPackageManager implements DistroPackageManager
                 result.push(parts[0]!.trim());
         }
         return result;
+    }
+
+    private async RemoveUnusedPackages(ctx: MachineContext)
+    {
+        await this.commandExecutor.ExecuteCommand(ctx, "sudo", "apt", "-y", "autoremove");
     }
 }
