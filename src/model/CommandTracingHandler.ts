@@ -16,15 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
 
-export interface CommandExecutionArgs
+export interface CommandTracer
 {
-    onNewStdErrData?: (data: string) => void;
-    onNewStdOutData?: (data: string) => void;
-    stdin?: string;
+    AddStdErr(text: string): void;
+    AddStdOut(text: string): void;
+    Finish(exitCode: number): void;
 }
 
-export interface MachineConnection
+export interface CommandTracingHandler
 {
-    Close(): void;
-    ExecuteCommand(command: string[], args: CommandExecutionArgs): Promise<number>;
+    CreateTracer(commandLine: string): CommandTracer;
 }

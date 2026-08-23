@@ -16,11 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
 import { AURPackageManager } from "./distros/arch/AURPackageManager";
+import { MachineContext } from "./model/MachineContext";
+import { MemoryCommandTracingHandler } from "./handlers/MemoryCommandTracingHandler";
 import { ConnectionsManager } from "./services/ConnectionsManager";
 import { PackageManager } from "./services/PackageManager";
+import { StandardStreamsCommandTracingHandler } from "./handlers/StandardStreamsCommandTracingHandler";
+import { UsersManager } from "./services/UsersManager";
+import { CommandTracingManager } from "./services/CommandTracingManager";
 
 export {
     AURPackageManager,
+    CommandTracingManager,
     ConnectionsManager,
-    PackageManager
+    MemoryCommandTracingHandler,
+    PackageManager,
+    StandardStreamsCommandTracingHandler,
+    UsersManager
+};
+
+export type {
+    MachineContext
 };
